@@ -1,0 +1,27 @@
+{
+  "name": "esp32_starter_template-generated",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mair/esp32-starter.git"
+  },
+  "bin": {
+    "create-esp32-app": "./index.js"
+  },
+  "keywords": ["esp32","template","starter"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mair/esp32-starter/issues"
+  },
+  "homepage": "https://github.com/Mair/esp32-starter#readme",
+  "dependencies": {
+    "inquirer": "^7.0.3",
+    "inquirer-fuzzy-path": "^2.2.0"
+  }
+}

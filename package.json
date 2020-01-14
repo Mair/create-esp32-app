@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/Mair/create-esp32-app#readme",
   "dependencies": {
+    "chalk": "^3.0.0",
     "inquirer": "^7.0.3",
     "inquirer-fuzzy-path": "^2.2.0"
   }

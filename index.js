@@ -2,6 +2,8 @@
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const chalk = require('chalk');
+
 inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
 
 const CURR_DIR = process.cwd();
@@ -14,7 +16,7 @@ if (process.platform === "win32") {
 }
 
 const defaultIDFPath = path.join(rootPath, "esp", "esp-idf");
-const defaultExtensiaToolsPath = path.join(rootPath, "esp", "tools", ".espressif");
+const defaultExtensiaToolsPath = path.join(rootPath, "esp", "tools", ".espressif", "tools");
 
 const questions = [
   {
@@ -22,7 +24,7 @@ const questions = [
     type: "input",
     message: "Project Name",
     validate: function(input) {
-      if (/^([A-Za-z]+[A-Za-z\-\_\d])+$/.test(input)) return true;
+      if (/^([A-Za-z\_][A-Za-z\-\_\d])/.test(input)) return true;
       else return "Project name must be alphanumeric and start with a letter";
     }
   },
@@ -41,7 +43,7 @@ const questions = [
     type: "fuzzypath",
     itemType: "directory",
     rootPath: rootPath,
-    message: "Select directory to Extensia Tools",
+    message: "Select directory to espressif Tools (Xtensa tools[.espressif/tools directory])",
     default: defaultExtensiaToolsPath,
     suggestOnly: true,
     depthLimit: 1
@@ -52,7 +54,12 @@ async function generate() {
   const answers = await inquirer.prompt(questions);
   fs.mkdirSync(`${CURR_DIR}/${answers.projectName}`);
   const templatePath = `${__dirname}/esp-idf-template/`;
+  console.log(chalk.cyan(`Generating Template with name "${answers.projectName}"`))
   createDirectoryContents(templatePath, answers.projectName, answers);
+  console.log(chalk.green("Success"))
+  console.log(chalk.green("please navigate to your new project and open it in vscode"))
+  console.log(chalk.cyan(`cd ${answers.projectName}`))
+  console.log(chalk.cyan("code ."))
 }
 
 function createDirectoryContents(templatePath, newProjectPath, answers) {

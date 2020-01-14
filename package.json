@@ -1,7 +1,7 @@
 {
   "name": "esp32_starter_template-generated",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A Simple ESP32 Starter template generator from your command line run",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -15,7 +15,7 @@
   },
   "keywords": ["esp32","template","starter"],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Mair/create-esp32-app/issues"
   },

@@ -1,67 +1,48 @@
 
 # ESP32 Starter template
 
-## About This template
+on your command line run
+```
+npx create-esp32-app
+```
 
-This template can be used as is but, its intended as a quick start for the students learning the ESP32-IDF through the Udemy course [Getting started with the ESP32 and the IDF](https://github.com/Mair/esp32-starter/blob/master/misc/commingsoon.md)
+## Quick overview
+
+This template can be used as is but, its intended as a quick start for the students learning the ESP32-IDF through my course [https://learnesp32.com](https://learnesp32.com)
+
 ## prerequisites
 
-1. setup your toolchain and ESP-IDF as described in the [official documentation](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/#step-1-set-up-the-toolchain)
+1. You will need to have [node](https://nodejs.org) installed.
+2. The esp-idf must be set up. you can follow the instructions in my course (free of charge) on the [Setting up Your Environment](https://www.learnesp32.com/2_introduction) module or follow the [official documentation](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/#step-1-set-up-the-toolchain)
+3. this template is for [vscode](https://code.visualstudio.com/download) which will need to be installed
+4. In VSCODE add the [c++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
 
-2. add an additional environment variable called `IDF_TOOLS` that points to the tools directory in the xtensia  installation (C:\Program Files\Espressif\ESP-IDF Tools\tools)
+5. ensure tour ESP32 is plugged in and that a COM PORT is established (You may need a driver for your ESP32 dev board)
 
-3. In VSCODE add the c++ extension 
-https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools
- 
-4. ensure tour ESP32 is plugged in and that a COM PORT is established (You may need a driver for your ESP32 dev board)
+## Run command
+
+1. in any directory run
+```
+npx create-esp32-app
+```
+
+2. you will be prompted for the name of your project.
+3. you will be prompted for the IDF path. select or navigate to the location of the IDF path
+3. you will be prompted for the IDF-tools path. select or navigate to the location of the IDF-tools path
+4. navigate to the directory of the project name you created
+```
+cd <project name>
+```
+4. open the project in vscode ```code .```
 
 ## vs code intellisense
 
-intellisense should just work so long as you have set up the IDF_PATH environment variable as described in the [official documentation](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/#step-1-set-up-the-toolchain) and the IDF_TOOLS as described above.
-
->NB. you may meed to do an initial build and restart vscode before it can resolve all variables.
-
+intellisense should just work so long as you have set up the paths correctly. If you have trouble double check your idf and tools paths and correct them in the **/.vscode/c_cpp_properties.json** file
 ## flashing the esp32
 
 1. in vs code, open a new terminal by pressing ctrl + \` (or pressing F1 and typing `open new terminal`)
 2. type the following command
 
-### for setups with idf.py
-
 ```bash
 idf.py -p [your com port] flash monitor
-```
-
-### or other versions -
-*to set your com port*
-```bash
-make menuconfig 
-```
-set your com port in the menu under serial
-then
-```
-make flash monitor
-```
-## debuging
-
-You will need an FT2322 in order to use a jtag. you can get them for about $10.00 on ali express.
-
-wire up the FT2322 and the esp32 as follows
-
-![FT2322 jtag debugging][FT2322-jtag]
-
-[FT2322-jtag]: /misc/pin%20mapping.svg "Logo Title Text 2"
-
-| FT2322 Pin Name | FT2322 pin number | ESP32 pin name| ESP32 pin number
-| --------------- |:-----------------:|:-------------:|:-------------:|
-| TCK             | ADBUS 0           | 13            | MTCK  
-| TDI             | ADBUS 1           | 12            | MTDI
-| TDO             | ADBUS 2           | 15            | MTDO
-| TMS             | ADBUS 3           | 14            | MTMS
-| GND             |                   | GND           |
-
-start the debugger by using
-
-```
-openocd -f debug\ftdi_ft2322.cfg -f debug\esp-wroom-32.cfg
 ```

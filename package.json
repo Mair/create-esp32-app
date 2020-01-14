@@ -1,9 +1,10 @@
 {
   "name": "create-esp32-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Simple ESP32 Starter template generator from your command line run",
   "main": "index.js",
   "scripts": {
+    "test": "echo \"No test specified\"",
     "start": "node index.js"
   },
   "repository": {

@@ -25,13 +25,17 @@ const questions = [
     type: "input",
     message: "Project Name",
     validate: function(input) {
-      if (/^([A-Za-z\_][A-Za-z\-\_\d])/.test(input)) return true;
+      if (/^([A-Za-z\_][A-Za-z\-\_\d])/.test(input) ) return true;
       else return "Project name must be alphanumeric and start with a letter";
     }
   },
   {
     name: "iDFPath",
     type: "fuzzypath",
+    validate: function(input) {
+      if (!!input) return true;
+      else return "IDF path cannot be blank (press tab to select path)";
+    },
     itemType: "directory",
     rootPath: rootPath,
     message: "Select directory to ESP-IDF",
@@ -42,6 +46,10 @@ const questions = [
   {
     name: "toolsPath",
     type: "fuzzypath",
+    validate: function(input) {
+      if (!!input) return true;
+      else return "IDF tools path cannot be blank (press tab to select path)";
+    },
     itemType: "directory",
     rootPath: rootPath,
     message: "Select directory to espressif Tools (Xtensa tools[.espressif/tools directory])",
@@ -72,6 +80,8 @@ async function generate() {
   console.log(chalk.cyan(`Generating Template with name"${answers.projectName}"`));
   createDirectoryContents(templatePath, answers.projectName, answers);
   console.log(chalk.green("Success"));
+  console.log(chalk.green("see read me for more information or visit us on"));
+  console.log(chalk.greenBright.bold.underline("https://learnesp32.com"));
   console.log(chalk.green("please navigate to your new project and open it in vscode"));
   console.log(chalk.cyan(`cd ${answers.projectName}`));
   console.log(chalk.cyan("code ."));

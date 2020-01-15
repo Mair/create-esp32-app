@@ -28,6 +28,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "inquirer": "^7.0.3",
-    "inquirer-fuzzy-path": "^2.2.0"
+    "inquirer-fuzzy-path": "^2.2.0",
+    "underscore.template": "^0.1.7"
   }
 }

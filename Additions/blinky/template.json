@@ -1,0 +1,20 @@
+{
+    "headers": ["#include \"driver/gpio.h\"", "#include \"freertos/FreeRTOS.h\"", "#include \"freertos/task.h\""],
+    "tasks": ["xTaskCreate(&blinky, \"blink led\", 2048, \"task 1\", 2, NULL);"],
+    "globals":["#define PIN 2"],
+    "function": [
+      "void blinky(void *params)",
+      "{",
+      "\tgpio_pad_select_gpio(PIN);",
+      "\tgpio_set_direction(PIN, GPIO_MODE_OUTPUT);",
+      "\tint isOn = 0;",
+      "\twhile (true)",
+      "\t{",
+      "\t\tisOn = !isOn;",
+      "\t\tgpio_set_level(PIN, isOn);",
+      "\t\tvTaskDelay(1000 / portTICK_PERIOD_MS);",
+      "\t}",
+      "}"
+    ]
+  }
+  

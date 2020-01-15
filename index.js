@@ -2,21 +2,22 @@
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-const chalk = require('chalk');
+const chalk = require("chalk");
+const UnderscoreTemplate = require("underscore.template");
 
 inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
 
 const CURR_DIR = process.cwd();
 
-var rootPath;
-if (process.platform === "win32") {
-  rootPath = "c:\\";
-} else {
-  rootPath = require("os").homedir();
-}
+const rootPath = process.platform === "win32" ? "c:\\" : require("os").homedir();
 
-const defaultIDFPath = path.join(rootPath, "esp", "esp-idf");
-const defaultExtensiaToolsPath = path.join(rootPath, "esp", "tools", ".espressif", "tools");
+const defaultIDFPath = !!process.env.IDF_PATH
+  ? process.env.IDF_PATH
+  : path.join(rootPath, "esp", "esp-idf");
+
+const defaultExtensiaToolsPath = !!process.env.IDF_TOOLS_PATH
+  ? process.env.IDF_TOOLS_PATH
+  : path.join(rootPath, "esp", "tools", ".espressif");
 
 const questions = [
   {
@@ -47,19 +48,33 @@ const questions = [
     default: defaultExtensiaToolsPath,
     suggestOnly: true,
     depthLimit: 1
+  },
+  {
+    name: "Additions",
+    type: "checkbox",
+    message: "Select additional sample code",
+    choices: [
+      {name:"blinky [blink led]", value:"blinky"},
+      // {name:"KConfig [config menu with idf.py menuconfig]", value:"KConfig" },
+      // {name:"SPIFS [files]", value:"SPIFS"}, 
+      // {name:"Example Connect [connect to internet]",value:"exampleConnect"}
+    ]
   }
 ];
 
 async function generate() {
   const answers = await inquirer.prompt(questions);
+
+  console.log("answers", answers);
+
   fs.mkdirSync(`${CURR_DIR}/${answers.projectName}`);
   const templatePath = `${__dirname}/esp-idf-template/`;
-  console.log(chalk.cyan(`Generating Template with name "${answers.projectName}"`))
+  console.log(chalk.cyan(`Generating Template with name"${answers.projectName}"`));
   createDirectoryContents(templatePath, answers.projectName, answers);
-  console.log(chalk.green("Success"))
-  console.log(chalk.green("please navigate to your new project and open it in vscode"))
-  console.log(chalk.cyan(`cd ${answers.projectName}`))
-  console.log(chalk.cyan("code ."))
+  console.log(chalk.green("Success"));
+  console.log(chalk.green("please navigate to your new project and open it in vscode"));
+  console.log(chalk.cyan(`cd ${answers.projectName}`));
+  console.log(chalk.cyan("code ."));
 }
 
 function createDirectoryContents(templatePath, newProjectPath, answers) {
@@ -70,7 +85,7 @@ function createDirectoryContents(templatePath, newProjectPath, answers) {
     if (stats.isFile()) {
       const contents = fs.readFileSync(origFilePath, "utf8");
       const updatedContents = replaceFileTokens(contents, answers);
-      if (file === '.npmignore') file = '.gitignore';
+      if (file === ".npmignore") file = ".gitignore";
       const writePath = `${CURR_DIR}/${newProjectPath}/${file}`;
       fs.writeFileSync(writePath, updatedContents, "utf8");
     } else if (stats.isDirectory()) {
@@ -86,13 +101,44 @@ function replaceFileTokens(contents, answers) {
   const forwardSlash_toolsPath = toolsPath.replace(/\\/g, "/");
   const forwardSlash_elf_Path = `${CURR_DIR.replace(/\\/g, "/")}/${projectName}/build/${projectName}.elf`;
   const backSlash_idf_path_escaped = forwardSlash_idfPath.replace(/\//g, "\\\\");
+  
+  const mainModel = getAddition(answers.Additions)
+ 
 
-  return contents
-    .replace(/{{IDF-TOOLS-PATH}}/g, forwardSlash_toolsPath)
-    .replace(/{{IDF-PATH}}/g, forwardSlash_idfPath)
-    .replace(/{{ELF-PATH}}/g, forwardSlash_elf_Path)
-    .replace(/{{PROJECT-NAME}}/g, projectName)
-    .replace(/{{IDF-PATH-BACK_SLASH_ESCAPED}}/g, backSlash_idf_path_escaped);
+  const model = {
+    IDF_TOOLS_PATH: forwardSlash_toolsPath,
+    IDF_PATH: forwardSlash_idfPath,
+    ELF_PATH: forwardSlash_elf_Path,
+    PROJECT_NAME: projectName,
+    IDF_PATH_BACKSLASH_ESCAPED: backSlash_idf_path_escaped,
+    headers:mainModel.headers,
+    tasks:mainModel.tasks,
+    functions:mainModel.functions,
+    globals:mainModel.globals,
+  };
+
+  const template = UnderscoreTemplate(contents);
+  const complied = template(model);
+  return complied;
+}
+
+function getAddition(additionalSelections){
+  const mainModel = {
+    headers:[],
+    globals:[],
+    tasks:[],
+    functions:[]
+  }
+
+  additionalSelections.forEach(addition=>{
+    const templateJson = require(path.join(__dirname,"Additions",addition,"template.json"))
+    const newHeaders = templateJson.headers.filter(header => !mainModel.headers.includes(header))
+    mainModel.headers = [...mainModel.headers, ...newHeaders]
+    mainModel.tasks = [...mainModel.tasks, ...templateJson.tasks]
+    mainModel.functions = [...mainModel.functions, ...templateJson.function]
+    mainModel.globals = [...mainModel.globals, ...templateJson.globals]
+  })
+  return mainModel;
 }
 
 generate();

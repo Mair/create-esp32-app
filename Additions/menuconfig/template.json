@@ -3,6 +3,7 @@
   "tasks": ["xTaskCreate(&config, \"config demo\", 2048, NULL, 2, NULL);"],
   "globals":["#define TAG \"CONFIG\""],
   "function": [
+    "// see https://www.learnesp32.com/7_menuconfig-introduction for details",
     "void config(void *params)",
     "{",
 

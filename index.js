@@ -13,20 +13,20 @@ const rootPath = process.platform === "win32" ? "c:\\" : require("os").homedir()
 
 let defaultIDFPath;
 if (!!process.env.IDF_PATH) {
-  console.log(chalk.magenta("IDF_PATH env var set! using " +process.env.IDF_PATH));
+  console.log(chalk.magenta("IDF_PATH env var set! using " + process.env.IDF_PATH));
   defaultIDFPath = process.env.IDF_PATH;
 } else {
   console.log(chalk.magenta("IDF_PATH env var not set"));
   defaultIDFPath = path.join(rootPath, "esp", "esp-idf");
 }
 
-let defaultExtensiaToolsPath
-if(!!process.env.IDF_TOOLS_PATH){
-  console.log(chalk.magenta("IDF_TOOLS_PATH env var set! using " +process.env.IDF_TOOLS_PATH));
-  defaultExtensiaToolsPath = process.env.IDF_TOOLS_PATH
+let defaultExtensiaToolsPath;
+if (!!process.env.IDF_TOOLS_PATH) {
+  console.log(chalk.magenta("IDF_TOOLS_PATH env var set! using " + process.env.IDF_TOOLS_PATH));
+  defaultExtensiaToolsPath = process.env.IDF_TOOLS_PATH;
 } else {
   console.log(chalk.magenta("IDF_TOOLS_PATH env var not set"));
-  defaultExtensiaToolsPath =  path.join(rootPath, "esp", "tools", ".espressif");
+  defaultExtensiaToolsPath = path.join(rootPath, "esp", "tools", ".espressif");
 }
 
 const questions = [
@@ -78,9 +78,9 @@ const questions = [
     choices: [
       { name: "debug [debug cfg files]", value: "debug" },
       { name: "blinky [example: blink led]", value: "blinky" },
-      { name: "menuconfig [example config menu with idf.py menuconfig]", value: "menuconfig" }
+      { name: "menuconfig [example: config menu with idf.py menuconfig]", value: "menuconfig" },
+      { name: "example connect [example: connect to internet]", value: "example_connect" }
       // {name:"SPIFS [files]", value:"SPIFS"},
-      // {name:"Example Connect [connect to internet]",value:"exampleConnect"}
     ]
   }
 ];
@@ -146,7 +146,8 @@ function generateTemplateModel(answers) {
     headers: mainModel.headers,
     tasks: mainModel.tasks,
     functions: mainModel.functions,
-    globals: mainModel.globals
+    globals: mainModel.globals,
+    extraComponents: mainModel.extraComponents
   };
   return model;
 }
@@ -162,16 +163,28 @@ function getAddition(additionalSelections) {
     headers: [],
     globals: [],
     tasks: [],
-    functions: []
+    functions: [],
+    extraComponents: []
   };
 
   additionalSelections.forEach(addition => {
     const templateJson = require(path.join(__dirname, "additions", addition, "template.json"));
-    const newHeaders = templateJson.headers.filter(header => !mainModel.headers.includes(header));
-    mainModel.headers = [...mainModel.headers, ...newHeaders];
-    mainModel.tasks = [...mainModel.tasks, ...templateJson.tasks];
-    mainModel.functions = [...mainModel.functions, ...templateJson.function];
-    mainModel.globals = [...mainModel.globals, ...templateJson.globals];
+    if (!!templateJson.headers) {
+      const newHeaders = templateJson.headers.filter(header => !mainModel.headers.includes(header));
+      mainModel.headers = [...mainModel.headers, ...newHeaders];
+    }
+    if (!!templateJson.tasks) {
+      mainModel.tasks = [...mainModel.tasks, ...templateJson.tasks];
+    }
+    if (!!templateJson.function) {
+      mainModel.functions = [...mainModel.functions, ...templateJson.function];
+    }
+    if (!!templateJson.globals) {
+      mainModel.globals = [...mainModel.globals, ...templateJson.globals];
+    }
+    if (!!templateJson.extraComponents) {
+      mainModel.extraComponents = [...mainModel.extraComponents, ...templateJson.extraComponents];
+    }
   });
   return mainModel;
 }

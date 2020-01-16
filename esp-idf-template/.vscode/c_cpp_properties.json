@@ -48,7 +48,9 @@
                 "${IDF_PATH}/components/lwip/include/apps",
                 "${IDF_PATH}/components/esp_http_server/include",
                 "${IDF_PATH}/components/nghttp/nghttp2/third-party/http-parser",
-                "${IDF_PATH}/components/log/include"
+                "${IDF_PATH}/components/log/include",
+                "${IDF_PATH}/components/esp_http_client/include",
+                "${IDF_PATH}/examples/common_components/protocol_examples_common/include"
             ],
             "defines": [],
             "cStandard": "c11",

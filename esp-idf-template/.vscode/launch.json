@@ -8,10 +8,10 @@
       "name": "ESP32 OpenOCD",
       "type": "cppdbg",
       "request": "launch",
-      "miDebuggerPath": "{{IDF-TOOLS-PATH}}/tools/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gdb.exe",
+      "miDebuggerPath": "<%= IDF_TOOLS_PATH %>/tools/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gdb.exe",
       "cwd": "${workspaceFolder}/build",
       //change the name of the elf file as required
-      "program": "{{ELF-PATH}}",
+      "program": "<%= ELF_PATH %>",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
@@ -19,7 +19,7 @@
           "ignoreFailures": true
         },
         {
-          "text": "file '{{ELF-PATH}}'"
+          "text": "file '<%= ELF_PATH %>'"
         },
         {
           "text": "target remote 127.0.0.1:3333"

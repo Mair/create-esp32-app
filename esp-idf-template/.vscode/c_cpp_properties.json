@@ -1,8 +1,8 @@
 {
     "env": {
         "MESSAGE":" MAC AND LINUX USERS!!!- change path from c:/... to ~/esp/... or as approirate for your enviroment",
-        "IDF_TOOLS": "{{IDF-TOOLS-PATH}}",
-        "IDF_PATH": "{{IDF-PATH}}"
+        "IDF_TOOLS": "<%= IDF_TOOLS_PATH %>/tools",
+        "IDF_PATH": "<%= IDF_PATH %>"
     },
     "configurations": [
         {

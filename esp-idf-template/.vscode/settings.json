@@ -1,10 +1,10 @@
 {
   "terminal.integrated.shell.windows": "cmd.exe",
-  "terminal.integrated.shellArgs.windows": ["/k", "{{IDF-PATH-BACK_SLASH_ESCAPED}}\\export.bat"],
+  "terminal.integrated.shellArgs.windows": ["/k", "<%= IDF_PATH_BACKSLASH_ESCAPED %>\\export.bat"],
   "terminal.integrated.shell.linux": "/bin/bash",
-  "terminal.integrated.shellArgs.linux": ["--init-file", "{{IDF-PATH}}/export.sh", "-i"],
+  "terminal.integrated.shellArgs.linux": ["--init-file", "<%= IDF_PATH %>/export.sh", "-i"],
   "terminal.integrated.shell.osx": "/bin/bash",
-  "terminal.integrated.shellArgs.osx": ["--init-file", "{{IDF-PATH}}/export.sh", "-i"],
+  "terminal.integrated.shellArgs.osx": ["--init-file", "<%= IDF_PATH %>/export.sh", "-i"],
   "files.associations": {
     "*.md": "markdown",
     "*.mdx": "tdx",

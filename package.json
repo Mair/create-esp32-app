@@ -1,6 +1,6 @@
 {
   "name": "create-esp32-app",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "A Simple ESP32 Starter template generator from your command line run",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "inquirer": "^7.0.3",
-    "inquirer-fuzzy-path": "^2.2.0"
+    "inquirer-fuzzy-path": "^2.2.0",
+    "underscore.template": "^0.1.7"
   }
 }

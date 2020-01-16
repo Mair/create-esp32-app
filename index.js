@@ -52,6 +52,14 @@ const questions = [
 
 async function generate() {
   const answers = await inquirer.prompt(questions);
+
+  console.log("answers", answers);
+  const folderName = `${CURR_DIR}/${answers.projectName}`;
+  if(fs.existsSync(folderName))
+  {
+    console.log(chalk.red(`folder ${folderName} exists`));
+    console.log(chalk.red(`Please retry using a different name`));
+  }
   fs.mkdirSync(`${CURR_DIR}/${answers.projectName}`);
   const templatePath = `${__dirname}/esp-idf-template/`;
   console.log(chalk.cyan(`Generating Template with name "${answers.projectName}"`))

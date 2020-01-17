@@ -6,9 +6,16 @@
 npx create-esp32-app
 ```
 
+You can watch the video by clicking the image link below
+[<img src="misc/create-esp-32.PNG">](https://www.learnesp32.com/2_create-esp32-app)
+
 ## Quick overview
 
 This template can be used as is but, its intended as a quick start for the students learning the ESP32-IDF through my course [https://learnesp32.com](https://learnesp32.com)
+
+if you want a simple vanilla flavoured template to copy and paste see [esp32-starter](https://github.com/Mair/esp32-starter)
+
+
 
 ## prerequisites
 

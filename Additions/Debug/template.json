@@ -1,7 +1,7 @@
 {
-    "headers": [],
-    "tasks": [],
-    "globals":[],
-    "function": []
-  }
-  
+  "name": "debug [debug cfg files]",
+  "headers": [],
+  "tasks": [],
+  "globals": [],
+  "function": []
+}

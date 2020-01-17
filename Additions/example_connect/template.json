@@ -1,4 +1,5 @@
 {
+  "name": "example connect [example: connect to internet]",
   "headers": [
     "#include \"freertos/FreeRTOS.h\"",
     "#include \"freertos/task.h\"",
@@ -8,7 +9,7 @@
     "#include \"esp_http_client.h\"",
     "#include \"protocol_examples_common.h\""
   ],
-  "extraComponents":["set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)"],
+  "extraComponents": ["set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)"],
   "tasks": ["xTaskCreate(&connect, \"connect to intranet\", 4 * 1024, NULL, 2, NULL);"],
   "globals": [],
   "function": [

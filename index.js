@@ -29,6 +29,17 @@ if (!!process.env.IDF_TOOLS_PATH) {
   defaultExtensiaToolsPath = path.join(rootPath, "esp", "tools", ".espressif");
 }
 
+const additionDirs = fs.readdirSync(path.resolve(__dirname, "additions"));
+const additionChoices = additionDirs.map(dir => {
+  const value = dir;
+  const additiondata = require(path.resolve(__dirname, "additions", dir, "template.json"));
+  const name = additiondata.name;
+  return {
+    name,
+    value
+  };
+});
+
 const questions = [
   {
     name: "projectName",
@@ -39,7 +50,7 @@ const questions = [
       if (fs.existsSync(folderName)) {
         return "Project name directory already exists. Please use another name";
       }
-      if (/^([A-Za-z\_][A-Za-z\-\_\d])/.test(input)) return true;
+      if (/^([A-Za-z\_][A-Za-z\-\_\d]*$)/gm.test(input)) return true;
       else return "Project name must be alphanumeric and start with a letter";
     }
   },
@@ -75,13 +86,14 @@ const questions = [
     name: "Additions",
     type: "checkbox",
     message: "Select additional sample code",
-    choices: [
-      { name: "debug [debug cfg files]", value: "debug" },
-      { name: "blinky [example: blink led]", value: "blinky" },
-      { name: "menuconfig [example: config menu with idf.py menuconfig]", value: "menuconfig" },
-      { name: "example connect [example: connect to internet]", value: "example_connect" }
-      // {name:"SPIFS [files]", value:"SPIFS"},
-    ]
+    choices: additionChoices
+    // choices: [
+    //   { name: "debug [debug cfg files]", value: "debug" },
+    //   { name: "blinky [example: blink led]", value: "blinky" },
+    //   { name: "menuconfig [example: config menu with idf.py menuconfig]", value: "menuconfig" },
+    //   { name: "example connect [example: connect to internet]", value: "example_connect" }
+    //   // {name:"SPIFS [files]", value:"SPIFS"},
+    // ]
   }
 ];
 

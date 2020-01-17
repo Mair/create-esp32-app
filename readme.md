@@ -51,3 +51,6 @@ click allow and close the shell by pressing the trash can (not the x) then reope
 ```bash
 idf.py -p [your com port] flash monitor
 ```
+
+## Contribution
+Pull requests are both welcome and encouraged 😃

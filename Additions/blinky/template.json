@@ -1,21 +1,21 @@
 {
-    "headers": ["#include \"driver/gpio.h\"", "#include \"freertos/FreeRTOS.h\"", "#include \"freertos/task.h\""],
-    "tasks": ["xTaskCreate(&blinky, \"blink led\", 2048, NULL, 2, NULL);"],
-    "globals":["#define PIN 2"],
-    "function": [
-      "// see https://www.learnesp32.com/3_blinkey for details",
-      "void blinky(void *params)",
-      "{",
-      "\tgpio_pad_select_gpio(PIN);",
-      "\tgpio_set_direction(PIN, GPIO_MODE_OUTPUT);",
-      "\tint isOn = 0;",
-      "\twhile (true)",
-      "\t{",
-      "\t\tisOn = !isOn;",
-      "\t\tgpio_set_level(PIN, isOn);",
-      "\t\tvTaskDelay(1000 / portTICK_PERIOD_MS);",
-      "\t}",
-      "}"
-    ]
-  }
-  
+  "name": "blinky [example: blink led]",
+  "headers": ["#include \"driver/gpio.h\"", "#include \"freertos/FreeRTOS.h\"", "#include \"freertos/task.h\""],
+  "tasks": ["xTaskCreate(&blinky, \"blink led\", 2048, NULL, 2, NULL);"],
+  "globals": ["#define PIN 2"],
+  "function": [
+    "// see https://www.learnesp32.com/3_blinkey for details",
+    "void blinky(void *params)",
+    "{",
+    "\tgpio_pad_select_gpio(PIN);",
+    "\tgpio_set_direction(PIN, GPIO_MODE_OUTPUT);",
+    "\tint isOn = 0;",
+    "\twhile (true)",
+    "\t{",
+    "\t\tisOn = !isOn;",
+    "\t\tgpio_set_level(PIN, isOn);",
+    "\t\tvTaskDelay(1000 / portTICK_PERIOD_MS);",
+    "\t}",
+    "}"
+  ]
+}

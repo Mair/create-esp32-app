@@ -29,16 +29,6 @@ if (!!process.env.IDF_TOOLS_PATH) {
   defaultExtensiaToolsPath = path.join(rootPath, "esp", "tools", ".espressif");
 }
 
-const additionDirs = fs.readdirSync(path.resolve(__dirname, "additions"));
-const additionChoices = additionDirs.map(dir => {
-  const value = dir;
-  const additiondata = require(path.resolve(__dirname, "additions", dir, "template.json"));
-  const name = additiondata.name;
-  return {
-    name,
-    value
-  };
-});
 
 const questions = [
   {
@@ -83,22 +73,45 @@ const questions = [
     depthLimit: 1
   },
   {
+    name: "isCpp",
+    type: "confirm",
+    message: "Use C++ (default is c [press Enter])",
+    default: false,
+
+  }
+];
+
+function getAdditions(answers) {
+  const additionDirs = fs.readdirSync(path.resolve(__dirname, "additions"));
+  const additionChoices = additionDirs.map(dir => {
+    const value = dir;
+    const additionalData = require(path.resolve(__dirname, "additions", dir, "template.json"));
+    const isCpp = !!additionalData.isCpp
+    const name = additionalData.name;
+    const disabled = !isCpp? false: !(isCpp && answers.isCpp)
+    return {
+      name,
+      value,
+      disabled
+    };
+  });
+
+  return [{
     name: "Additions",
     type: "checkbox",
     message: "Select additional sample code",
     choices: additionChoices
-    // choices: [
-    //   { name: "debug [debug cfg files]", value: "debug" },
-    //   { name: "blinky [example: blink led]", value: "blinky" },
-    //   { name: "menuconfig [example: config menu with idf.py menuconfig]", value: "menuconfig" },
-    //   { name: "example connect [example: connect to internet]", value: "example_connect" }
-    //   // {name:"SPIFS [files]", value:"SPIFS"},
-    // ]
-  }
-];
+  }]
+}
 
 async function generate() {
-  const answers = await inquirer.prompt(questions);
+  const templateAnswers = await inquirer.prompt(questions);
+  const additionQuestions = getAdditions(templateAnswers);
+  const additionAnswers = await inquirer.prompt(additionQuestions);
+  const answers = {
+    ...templateAnswers,
+    ...additionAnswers
+  }
   console.log("answers", answers);
 
   fs.mkdirSync(path.join(CURR_DIR, answers.projectName));
@@ -106,10 +119,18 @@ async function generate() {
   console.log(chalk.cyan(`Generating Template with name"${answers.projectName}"`));
   var templateModel = generateTemplateModel(answers);
   createDirectoryContents(templatePath, answers.projectName, templateModel);
+
   //additions
   answers.Additions.forEach(addition => {
-    const additionsPath = path.resolve(__dirname, "additions", addition, "files");
+    const outPath = path.resolve(__dirname, "additions", addition)
+    const additionsPath = path.resolve(outPath, "files");
     createDirectoryContents(additionsPath, answers.projectName, templateModel);
+    // run additional scripts if present
+    const additionsScripts = path.resolve(outPath, "index.js");
+    if (fs.existsSync(additionsScripts)) {
+      const additionScript = require(additionsScripts);
+      additionScript.run(path.resolve(CURR_DIR, answers.projectName));
+    }
   });
 
   console.log(chalk.green("Success"));
@@ -125,13 +146,15 @@ function createDirectoryContents(templatePath, newProjectPath, templateModel) {
   filesToCreate.forEach(file => {
     const origFilePath = path.resolve(templatePath, file);
     const stats = fs.statSync(origFilePath);
-    const newPath = path.resolve(CURR_DIR, newProjectPath, file);
     if (stats.isFile()) {
       const contents = fs.readFileSync(origFilePath, "utf8");
       const updatedContents = applyTemplate(contents, templateModel);
       if (file === ".npmignore") file = ".gitignore";
+      if(file.endsWith(".c") && templateModel.isCpp) file +="pp"
+      const newPath = path.resolve(CURR_DIR, newProjectPath, file);
       fs.writeFileSync(newPath, updatedContents, "utf8");
     } else if (stats.isDirectory()) {
+      const newPath = path.resolve(CURR_DIR, newProjectPath, file);
       if (!fs.existsSync(newPath)) {
         fs.mkdirSync(newPath);
       }
@@ -159,7 +182,8 @@ function generateTemplateModel(answers) {
     tasks: mainModel.tasks,
     functions: mainModel.functions,
     globals: mainModel.globals,
-    extraComponents: mainModel.extraComponents
+    extraComponents: mainModel.extraComponents,
+    isCpp: answers.isCpp
   };
   return model;
 }

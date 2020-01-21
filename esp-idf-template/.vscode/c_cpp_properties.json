@@ -50,7 +50,11 @@
                 "${IDF_PATH}/components/nghttp/nghttp2/third-party/http-parser",
                 "${IDF_PATH}/components/log/include",
                 "${IDF_PATH}/components/esp_http_client/include",
-                "${IDF_PATH}/examples/common_components/protocol_examples_common/include"
+                "${IDF_PATH}/examples/common_components/protocol_examples_common/include",
+                "${IDF_TOOLS}/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/8.2.0",
+                "${IDF_TOOLS}/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/8.2.0/xtensa-esp32-elf",
+                "${IDF_PATH}/components/newlib/include"
+
             ],
             "defines": [],
             "cStandard": "c11",

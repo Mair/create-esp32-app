@@ -1,10 +1,14 @@
 
 # ESP32 Starter template
->A Simple ESP32 Starter template generator from your command line run
+>A Simple ESP32 Starter template generator 
+
+from your command line run
 
 ```
 npx create-esp32-app
 ```
+
+![create-esp-32.PNG](./misc/create-esp32-app-v1.gif)
 
 You can watch the video by clicking the image link below
 [<img src="misc/create-esp-32.PNG">](https://www.learnesp32.com/2_create-esp32-app)
@@ -37,12 +41,13 @@ npx create-esp32-app
 2. you will be prompted for the name of your project.
 3. you will be prompted for the IDF path (esp-idf folder). select or navigate to the location of the IDF path. If you have an environment variable called **IDF_PATH** the path will default to the environment variable.
 3. you will be prompted for the IDF-TOOLS path (.espressif folder). select or navigate to the location of the IDF-TOOLS path. If you have an environment variable called **IDF_TOOLS_PATH** the path will default to the environment variable.
-4. You will be asked if you like to include additional sample code or other items. Leave blank if you would like a bare-bones project
-5. navigate to the directory of the project name you created
+4. You will be asked if you want to create a c or c++ project
+5. You will be asked if you like to include additional sample code or other items. Leave blank if you would like a bare-bones project
+6. navigate to the directory of the project name you created
 ```
 cd <project name>
 ```
-4. open the project in vscode ```code .```
+8. open the project in vscode ```code .```
 
 ## vs code intellisense
 
@@ -58,6 +63,15 @@ click allow and close the shell by pressing the trash can (not the x) then reope
 ```bash
 idf.py -p [your com port] flash monitor
 ```
+
+## Additional code samples
+* blinky [example: blink led]
+* c++ [example: c++ starter]
+* debug [debug cfg files]
+* example connect [example: connect to internet]
+* menuconfig [example: config menu with idf.py menuconfig]
+
+log a request if you would like something else added
 
 ## Contribution
 Pull requests are both welcome and encouraged 😃

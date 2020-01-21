@@ -5,7 +5,7 @@
 <%=line%><%})%>
 <% functions.map(line=>{%>
 <%=line%><%})%>
-void app_main(void)
+<% if(isCpp)print("extern \"C\" ")  %>void app_main(void)
 {
   printf("Hello world!\n");
   <% tasks.map(line=>{%>

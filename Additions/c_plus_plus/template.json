@@ -1,0 +1,27 @@
+{
+  "name": "c++ [example: c++ starter]",
+  "headers": ["#include <string>", "#include <iostream>"],
+  "tasks": [" Person john(\"John\", 23);", " john.SayHello();"],
+  "globals": ["using namespace std;"],
+  "function": [
+    "class Person",
+    "{",
+    "  int _age;",
+    "  string _name;",
+    "",
+    "public:",
+    "  Person(string, int);",
+    "  void SayHello()",
+    "  {",
+    "    cout << \"Hi I'm \" << this->_name << \" and I'm \" << this->_age << \" years old\\n\";",
+    "  }",
+    "};",
+    "",
+    "Person::Person(string name, int age)",
+    "{",
+    "  _name = name;",
+    "  _age = age;",
+    "}"
+  ],
+  "isCpp": true
+}

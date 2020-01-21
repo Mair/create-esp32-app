@@ -2,7 +2,7 @@
   "name": "blinky [example: blink led]",
   "headers": ["#include \"driver/gpio.h\"", "#include \"freertos/FreeRTOS.h\"", "#include \"freertos/task.h\""],
   "tasks": ["xTaskCreate(&blinky, \"blink led\", 2048, NULL, 2, NULL);"],
-  "globals": ["#define PIN 2"],
+  "globals": ["#define PIN GPIO_NUM_2"],
   "function": [
     "// see https://www.learnesp32.com/3_blinkey for details",
     "void blinky(void *params)",

@@ -124,7 +124,10 @@ async function generate() {
   answers.Additions.forEach(addition => {
     const outPath = path.resolve(__dirname, "additions", addition)
     const additionsPath = path.resolve(outPath, "files");
-    createDirectoryContents(additionsPath, answers.projectName, templateModel);
+    if(fs.existsSync(additionsPath))
+    {
+      createDirectoryContents(additionsPath, answers.projectName, templateModel);
+    }
     // run additional scripts if present
     const additionsScripts = path.resolve(outPath, "index.js");
     if (fs.existsSync(additionsScripts)) {

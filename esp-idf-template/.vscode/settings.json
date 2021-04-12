@@ -1,6 +1,17 @@
 {
   "terminal.integrated.shell.windows": "cmd.exe",
-  "terminal.integrated.shellArgs.windows": ["/k", "<%= IDF_PATH_BACKSLASH_ESCAPED %>\\export.bat"],
+  <% if(PYTHON_PATH) { %>
+  "terminal.integrated.env.windows": {
+    "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
+  },
+  "terminal.integrated.env.osx": {
+    "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
+  },
+  "terminal.integrated.env.linux": {
+    "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
+  },
+  <% } %>
+  "terminal.integrated.shellArgs.windows": ["/k", "<%= IDF_PATH_BACKSLASH_ESCAPED %>/export.bat"],
   "terminal.integrated.shell.linux": "/bin/bash",
   "terminal.integrated.shellArgs.linux": ["--init-file", "<%= IDF_PATH %>/export.sh", "-i"],
   "terminal.integrated.shell.osx": "/bin/bash",

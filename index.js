@@ -35,7 +35,7 @@ const questions = [
     name: "projectName",
     type: "input",
     message: "Project Name",
-    validate: function(input) {
+    validate: function (input) {
       const folderName = `${CURR_DIR}/${input}`;
       if (fs.existsSync(folderName)) {
         return "Project name directory already exists. Please use another name";
@@ -47,7 +47,7 @@ const questions = [
   {
     name: "iDFPath",
     type: "fuzzypath",
-    validate: function(input) {
+    validate: function (input) {
       if (!!input) return true;
       else return "IDF path cannot be blank (press tab to select path)";
     },
@@ -61,7 +61,7 @@ const questions = [
   {
     name: "toolsPath",
     type: "fuzzypath",
-    validate: function(input) {
+    validate: function (input) {
       if (!!input) return true;
       else return "IDF tools path cannot be blank (press tab to select path)";
     },
@@ -88,7 +88,7 @@ function getAdditions(answers) {
     const additionalData = require(path.resolve(__dirname, "additions", dir, "template.json"));
     const isCpp = !!additionalData.isCpp
     const name = additionalData.name;
-    const disabled = !isCpp? false: !(isCpp && answers.isCpp)
+    const disabled = !isCpp ? false : !(isCpp && answers.isCpp)
     return {
       name,
       value,
@@ -104,13 +104,43 @@ function getAdditions(answers) {
   }]
 }
 
+
+
+
+
 async function generate() {
   const templateAnswers = await inquirer.prompt(questions);
   const additionQuestions = getAdditions(templateAnswers);
   const additionAnswers = await inquirer.prompt(additionQuestions);
+
+  
+
+
+  if (!fs.existsSync(templateAnswers.iDFPath)) {
+    console.log(chalk.red("Error: IDF-PATH is invalid"));
+    return
+  }
+
+  if (!fs.existsSync(templateAnswers.toolsPath)) {
+    console.log(chalk.red("Error: ESP tools path is invalid"));
+    return
+  }
+
+  let pythonDir = null;
+  const pythonRootDir = path.join(templateAnswers.toolsPath, "tools", "idf-python");
+  const pythonDirExists = fs.existsSync(pythonRootDir);
+  if (pythonDirExists) {
+    const pythonDistFolderItems = fs.readdirSync(pythonRootDir, { withFileTypes: true })
+    const pythonDistFolder = pythonDistFolderItems.filter(dir => dir.isDirectory())
+    if (pythonDistFolder.length > 0) {
+      pythonDir = path.join(pythonRootDir, pythonDistFolder[0].name, "Scripts")
+    }
+  }
+
   const answers = {
     ...templateAnswers,
-    ...additionAnswers
+    pythonDir,
+    ...additionAnswers,
   }
   console.log("answers", answers);
 
@@ -124,8 +154,7 @@ async function generate() {
   answers.Additions.forEach(addition => {
     const outPath = path.resolve(__dirname, "additions", addition)
     const additionsPath = path.resolve(outPath, "files");
-    if(fs.existsSync(additionsPath))
-    {
+    if (fs.existsSync(additionsPath)) {
       createDirectoryContents(additionsPath, answers.projectName, templateModel);
     }
     // run additional scripts if present
@@ -153,7 +182,7 @@ function createDirectoryContents(templatePath, newProjectPath, templateModel) {
       const contents = fs.readFileSync(origFilePath, "utf8");
       const updatedContents = applyTemplate(contents, templateModel);
       if (file === ".npmignore") file = ".gitignore";
-      if(file.endsWith(".c") && templateModel.isCpp) file +="pp"
+      if (file.endsWith(".c") && templateModel.isCpp) file += "pp"
       const newPath = path.resolve(CURR_DIR, newProjectPath, file);
       fs.writeFileSync(newPath, updatedContents, "utf8");
     } else if (stats.isDirectory()) {
@@ -167,11 +196,14 @@ function createDirectoryContents(templatePath, newProjectPath, templateModel) {
 }
 
 function generateTemplateModel(answers) {
-  const { iDFPath, toolsPath, projectName } = answers;
+  const { iDFPath, toolsPath, projectName, pythonDir } = answers;
   const forwardSlash_idfPath = iDFPath.replace(/\\/g, "/");
   const forwardSlash_toolsPath = toolsPath.replace(/\\/g, "/");
   const forwardSlash_elf_Path = `${CURR_DIR.replace(/\\/g, "/")}/${projectName}/build/${projectName}.elf`;
   const backSlash_idf_path_escaped = forwardSlash_idfPath.replace(/\//g, "\\\\");
+  const forwardSlash_python = pythonDir.replace(/\\/g, "/");
+
+
 
   const mainModel = getAddition(answers.Additions);
 
@@ -180,7 +212,8 @@ function generateTemplateModel(answers) {
     IDF_PATH: forwardSlash_idfPath,
     ELF_PATH: forwardSlash_elf_Path,
     PROJECT_NAME: projectName,
-    IDF_PATH_BACKSLASH_ESCAPED: backSlash_idf_path_escaped,
+    IDF_PATH_BACKSLASH_ESCAPED: forwardSlash_idfPath,
+    PYTHON_PATH: forwardSlash_python,
     headers: mainModel.headers,
     tasks: mainModel.tasks,
     functions: mainModel.functions,

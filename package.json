@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"No test specified\"",
-    "start": "node index.js"
+    "start": "node index.js",
+    "debug": "node --inspect-brk index.js",
+    "deploy": "np"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
     "chalk": "^3.0.0",
     "inquirer": "^7.0.3",
     "inquirer-fuzzy-path": "^2.2.0",
+    "np": "^7.4.0",
     "underscore.template": "^0.1.7"
   }
 }

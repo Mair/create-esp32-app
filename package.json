@@ -1,6 +1,6 @@
 {
   "name": "create-esp32-app",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "A Simple ESP32 Starter template generator from your command line run",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/Mair/create-esp32-app.git"
   },
   "bin": {
-    "create-esp32-app": "./index.js"
+    "create-esp32-app": "index.js"
   },
   "keywords": [
     "esp32",

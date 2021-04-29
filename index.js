@@ -136,6 +136,9 @@ async function generate() {
       pythonDir = path.join(pythonRootDir, pythonDistFolder[0].name, "Scripts")
     }
   }
+  if(!pythonDir){
+    console.log(chalk.yellow("Warning!: Python directory in tools was not discovered"));
+  }
 
   const answers = {
     ...templateAnswers,
@@ -201,7 +204,7 @@ function generateTemplateModel(answers) {
   const forwardSlash_toolsPath = toolsPath.replace(/\\/g, "/");
   const forwardSlash_elf_Path = `${CURR_DIR.replace(/\\/g, "/")}/${projectName}/build/${projectName}.elf`;
   const backSlash_idf_path_escaped = forwardSlash_idfPath.replace(/\//g, "\\\\");
-  const forwardSlash_python = pythonDir.replace(/\\/g, "/");
+  const forwardSlash_python = pythonDir?.replace(/\\/g, "/");
 
 
 
@@ -213,7 +216,7 @@ function generateTemplateModel(answers) {
     ELF_PATH: forwardSlash_elf_Path,
     PROJECT_NAME: projectName,
     IDF_PATH_BACKSLASH_ESCAPED: forwardSlash_idfPath,
-    PYTHON_PATH: forwardSlash_python,
+    PYTHON_PATH: forwardSlash_python | "",
     headers: mainModel.headers,
     tasks: mainModel.tasks,
     functions: mainModel.functions,

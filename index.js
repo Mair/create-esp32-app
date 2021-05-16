@@ -4,8 +4,9 @@ const path = require("path");
 const fs = require("fs");
 const chalk = require("chalk");
 const UnderscoreTemplate = require("underscore.template");
+var pjson = require('./package.json');
 
-console.log(chalk.bgWhite.black(`Welcome to CREATE-ESP32-APP v${process.env.npm_package_version} 🎉`))
+console.log(chalk.bgWhite.black(`Welcome to CREATE-ESP32-APP v${pjson.version} 🎉`))
 
 inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
 

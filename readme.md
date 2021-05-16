@@ -77,6 +77,19 @@ log a request if you would like something else added
 
 ## Troubleshooting
 
+### Integrated terminal does not work in vs-code after version 1.15.1
+
+As of vs-code v1.56.1 the terminal does not run the needed scripts to import the IDF environment
+see this issue
+
+You will need to add `"terminal.integrated.allowWorkspaceConfiguration":true` to your user settings for the terminal to work.
+
+To get to your user settings, see https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations
+for windows users its usually located at C:\Users\<you user name>\AppData\Roaming\Code\User\settings.json
+then add the following entry
+
+"terminal.integrated.allowWorkspaceConfiguration":true
+
 ### space in user profiles
 
 you receive an error when running npx-create-esp32-app that looks like
@@ -101,6 +114,18 @@ npm config set cache C:\node_cache --global
 ```
 
 then try `npx create-esp32` again
+
+As of vs-code v1.56.1 the terminal does not run the needed scripts to import the IDF environment
+see this issue
+
+You will need to "terminal.integrated.allowWorkspaceConfiguration":true to your user settings for the terminal to work.
+
+To get to your user settings, see https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations
+for windows users its usually located at C:\Users\<you user name>\AppData\Roaming\Code\User\settings.json
+then add the following entry
+
+"terminal.integrated.allowWorkspaceConfiguration":true
+
 
 ### python issues
 

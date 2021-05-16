@@ -175,7 +175,7 @@ async function generate() {
   console.log(chalk.greenBright.bold.underline("https://learnesp32.com"));
   console.log(chalk.black.bgRed('Warning! As of vs-code v1.56.1 you must add '));
   console.log(chalk.black.bgRed.bold('"terminal.integrated.allowWorkspaceConfiguration":true,'));
-  console.log(chalk.black.bgRed('to your user settings. see https://github.com/Mair/create-esp32-app/issues/10'));
+  console.log(chalk.black.bgRed('to your user settings for the integrated terminal to work. see https://github.com/Mair/create-esp32-app/issues/10'));
   console.log(chalk.green("please navigate to your new project and open it in vscode"));
   console.log(chalk.cyan(`cd ${answers.projectName}`));
   console.log(chalk.cyan("code ."));

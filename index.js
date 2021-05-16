@@ -171,6 +171,10 @@ async function generate() {
   console.log(chalk.green("Success"));
   console.log(chalk.green("see read me for more information or visit us on"));
   console.log(chalk.greenBright.bold.underline("https://learnesp32.com"));
+  console.log(chalk.greenBright.bold.underline("https://learnesp32.com"));
+  console.log(chalk.black.bgRed('Warning! As of vs-code v1.56.1 you must add '));
+  console.log(chalk.black.bgRed.bold('"terminal.integrated.allowWorkspaceConfiguration":true,'));
+  console.log(chalk.black.bgRed('to your user settings. see https://github.com/Mair/create-esp32-app/issues/10'));
   console.log(chalk.green("please navigate to your new project and open it in vscode"));
   console.log(chalk.cyan(`cd ${answers.projectName}`));
   console.log(chalk.cyan("code ."));
@@ -203,8 +207,7 @@ function generateTemplateModel(answers) {
   const forwardSlash_idfPath = iDFPath.replace(/\\/g, "/");
   const forwardSlash_toolsPath = toolsPath.replace(/\\/g, "/");
   const forwardSlash_elf_Path = `${CURR_DIR.replace(/\\/g, "/")}/${projectName}/build/${projectName}.elf`;
-  const backSlash_idf_path_escaped = forwardSlash_idfPath.replace(/\//g, "\\\\");
-  const forwardSlash_python = pythonDir?.replace(/\\/g, "/");
+  const forwardSlash_python = !pythonDir? null : pythonDir.replace(/\\/g, "/");
 
 
 
@@ -216,7 +219,7 @@ function generateTemplateModel(answers) {
     ELF_PATH: forwardSlash_elf_Path,
     PROJECT_NAME: projectName,
     IDF_PATH_BACKSLASH_ESCAPED: forwardSlash_idfPath,
-    PYTHON_PATH: forwardSlash_python | "",
+    PYTHON_PATH: forwardSlash_python,
     headers: mainModel.headers,
     tasks: mainModel.tasks,
     functions: mainModel.functions,

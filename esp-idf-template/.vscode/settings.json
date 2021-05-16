@@ -1,4 +1,43 @@
 {
+  // Important!!!!!!! 
+  // for this to work You must add  "terminal.integrated.allowWorkspaceConfiguration":true
+  // in your user settings 
+  // see https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations 
+  // on how to locate your user settings
+  "terminal.integrated.profiles.windows": {
+    "idf": {
+      "path": "${env:windir}/System32/cmd.exe",
+      "args": ["/k", "<%= IDF_PATH %>/export.bat"],
+      <% if(PYTHON_PATH) { %>
+      "env": {
+        "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
+      }
+      <% } %>
+    }
+  },
+  "terminal.integrated.profiles.linux": {
+    "idf": {
+      "path": "/bin/bash",
+      "args":["--init-file", "<%= IDF_PATH %>/export.sh", "-i"],
+      <% if(PYTHON_PATH) { %>
+        "env": {
+          "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
+        }
+        <% } %>
+    },
+  },
+  "terminal.integrated.profiles.osx": {
+    "idf": {
+      "path": "/bin/bash",
+      "args": ["--init-file", "<%= IDF_PATH %>/export.sh", "-i"],
+      <% if(PYTHON_PATH) { %>
+        "env": {
+          "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
+        }
+        <% } %>
+    },
+  },
+  // the following is being depricated and will be replaced.
   "terminal.integrated.shell.windows": "cmd.exe",
   <% if(PYTHON_PATH) { %>
   "terminal.integrated.env.windows": {
@@ -11,7 +50,7 @@
     "IDF_PYTHON_ENV_PATH" : "<%= PYTHON_PATH %>"
   },
   <% } %>
-  "terminal.integrated.shellArgs.windows": ["/k", "<%= IDF_PATH_BACKSLASH_ESCAPED %>/export.bat"],
+  "terminal.integrated.shellArgs.windows": ["/k", "<%= IDF_PATH %>/export.bat"],
   "terminal.integrated.shell.linux": "/bin/bash",
   "terminal.integrated.shellArgs.linux": ["--init-file", "<%= IDF_PATH %>/export.sh", "-i"],
   "terminal.integrated.shell.osx": "/bin/bash",

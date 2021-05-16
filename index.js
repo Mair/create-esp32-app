@@ -5,6 +5,8 @@ const fs = require("fs");
 const chalk = require("chalk");
 const UnderscoreTemplate = require("underscore.template");
 
+console.log(chalk.bgWhite.black(`Welcome to CREATE-ESP32-APP v${process.env.npm_package_version} 🎉`))
+
 inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
 
 const CURR_DIR = process.cwd();
@@ -170,7 +172,6 @@ async function generate() {
 
   console.log(chalk.green("Success"));
   console.log(chalk.green("see read me for more information or visit us on"));
-  console.log(chalk.greenBright.bold.underline("https://learnesp32.com"));
   console.log(chalk.greenBright.bold.underline("https://learnesp32.com"));
   console.log(chalk.black.bgRed('Warning! As of vs-code v1.56.1 you must add '));
   console.log(chalk.black.bgRed.bold('"terminal.integrated.allowWorkspaceConfiguration":true,'));

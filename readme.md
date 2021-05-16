@@ -73,5 +73,102 @@ idf.py -p [your com port] flash monitor
 
 log a request if you would like something else added
 
+
+
+## Troubleshooting
+
+### space in user profiles
+
+you receive an error when running npx-create-esp32-app that looks like
+
+- Error: EPERM: operation not permitted, mkdir
+- TypeError: cannot read property '<some value>' of undefined
+
+This can happen on windows if there is a space in your username which means you will have a space in your home directory. You can see your home directory on windows by typing
+
+```
+echo %USERPROFILE%
+```
+
+if you do have a space
+
+1. create a directory to store your npm (node package manager) cache
+2. set the new directory for node cache
+
+```
+mkdir c:\node_cache
+npm config set cache C:\node_cache --global
+```
+
+then try `npx create-esp32` again
+
+### python issues
+
+1. if you use the installed idf console and there is no issues however in the idf terminal you get a python issue, it is recommended that you download and install python from https://www.python.org/downloads/
+
+when going through the wizard pay attention to the options and under advanced option ensure you check the
+
+> Add Python to environment variables
+
+option
+
+### python variables are unsatisfied
+
+have a look at the .vscode/settings.json
+
+check or add that you have the following entries. The one for your OS is the important one
+
+```json
+  "terminal.integrated.env.windows": {
+    "IDF_PYTHON_ENV_PATH" : "<IDF_TOOLS_PATH>/.espressif/tools/idf-python/3.8.7/Scripts"
+  },
+  "terminal.integrated.env.osx": {
+    "IDF_PYTHON_ENV_PATH" : "<IDF_TOOLS_PATH>/.espressif/tools/idf-python/3.8.7/Scripts"
+  },
+  "terminal.integrated.env.linux": {
+    "IDF_PYTHON_ENV_PATH" : "<IDF_TOOLS_PATH>/.espressif/tools/idf-python/3.8.7/Scripts"
+  },
+
+```
+
+ensure the path for your OS is correct
+
+Sometimes on initial configuration or if you are switching IDF version you get an error in the console telling you to run `install.bat`. If you see this simple run it.
+`c:\esp\esp-idf\install.bat`
+this usually sorts out most other python issues. You normally would only need to run this once
+
+## Create-esp32-app not updating to the new version
+
+the current version of the project can be established by looking at the [package.json](https://github.com/Mair/create-esp32-app/blob/master/package.json) under the version property.
+When you run create-esp32-app the first line should print out the version number 
+```
+Welcome to CREATE-ESP32-APP v0.7.2 🎉
+```
+If you don't see the version number or it's old, you may have a stale version in cache.
+To remedy this
+1. ensure its not globaly deployed
+```bash
+npm uninstall -g create-esp32-app
+```
+2. find the location of your npx cache
+```bash
+ npm config get cache
+ ```
+3. this will print out the cache directory.
+navigate to that directory
+```
+cd <cache dir>
+```
+4. you should see a _npx dir in there
+```
+cd _npx
+```
+5. delete the content
+```bash
+#for linux or mac
+rm -rf *
+#for windows
+del *
+```
 ## Contribution
 Pull requests are both welcome and encouraged 😃

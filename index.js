@@ -85,10 +85,10 @@ const questions = [
 ];
 
 function getAdditions(answers) {
-  const additionDirs = fs.readdirSync(path.resolve(__dirname, "additions"));
+  const additionDirs = fs.readdirSync(path.resolve(__dirname, "Additions"));
   const additionChoices = additionDirs.map(dir => {
     const value = dir;
-    const additionalData = require(path.resolve(__dirname, "additions", dir, "template.json"));
+    const additionalData = require(path.resolve(__dirname, "Additions", dir, "template.json"));
     const isCpp = !!additionalData.isCpp
     const name = additionalData.name;
     const disabled = !isCpp ? false : !(isCpp && answers.isCpp)
@@ -121,12 +121,12 @@ async function generate() {
 
   if (!fs.existsSync(templateAnswers.iDFPath)) {
     console.log(chalk.red("Error: IDF-PATH is invalid"));
-    return
+    //return
   }
 
   if (!fs.existsSync(templateAnswers.toolsPath)) {
     console.log(chalk.red("Error: ESP tools path is invalid"));
-    return
+    //return
   }
 
   let pythonDir = null;
@@ -158,7 +158,7 @@ async function generate() {
 
   //additions
   answers.Additions.forEach(addition => {
-    const outPath = path.resolve(__dirname, "additions", addition)
+    const outPath = path.resolve(__dirname, "Additions", addition)
     const additionsPath = path.resolve(outPath, "files");
     if (fs.existsSync(additionsPath)) {
       createDirectoryContents(additionsPath, answers.projectName, templateModel);
@@ -248,7 +248,7 @@ function getAddition(additionalSelections) {
   };
 
   additionalSelections.forEach(addition => {
-    const templateJson = require(path.join(__dirname, "additions", addition, "template.json"));
+    const templateJson = require(path.join(__dirname, "Additions", addition, "template.json"));
     if (!!templateJson.headers) {
       const newHeaders = templateJson.headers.filter(header => !mainModel.headers.includes(header));
       mainModel.headers = [...mainModel.headers, ...newHeaders];
